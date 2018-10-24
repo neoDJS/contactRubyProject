@@ -65,7 +65,7 @@ Menu ={ 1 => {label: "Add a new contact",
 												}
 			 },
         3 => {label: "List all contact info",
-			  bloc: define_method("list_contact"){ |val=4|
+			  bloc: define_method("list_contact"){ |val=0|
 			  										done = false
 													if !Contact.all.empty?
 														puts "Here is the Contact list: \n\n" 
@@ -88,7 +88,8 @@ Menu ={ 1 => {label: "Add a new contact",
 														val = getName("first")
 														cname += " #{val.new_capitalize}"
 														
-														Contact.delete_by_name(cname)
+														Contact.delete_by_name(cname)	
+														puts "#{cname} deleted!"													
 													end
 													return done
 												}
@@ -184,14 +185,14 @@ def running
 	Contact.load
 	
 	while !terminated?(count)
-		puts "\n\n\t\tWELCOME to my Contact App\n" if count < 1
+		puts "\n\n\t\tWELCOME to my Contact App\n".blue if count < 1
 		puts "\tHere is the menu: "
-		Menu.each{|k, o| puts "\t\t#{k} - #{o[:label]}" }
+		Menu.each{|k, o| puts "\t\t#{k.to_s.blue} - #{o[:label]}" }
 		puts "\tWhat do you want to do?"
 		puts "\tChoose the number of the menu option you want work with :\n"
 		opt = getAnInteger(1, Menu.keys.last)#gets.strip.to_i
 		
-		puts "#{opt} - #{Menu[opt][:label]}"
+		#puts "#{opt} - #{Menu[opt][:label]}"
 		exit = (send Menu[opt][:bloc]) && (opt == 5)
 		break if exit
 		 

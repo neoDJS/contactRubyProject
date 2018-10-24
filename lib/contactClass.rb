@@ -7,7 +7,7 @@ class Contact
     def initialize(contct = {})
       if contct.empty?
           @id = @@all.length
-          puts "baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad"
+          #puts "baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad"
       else
           @id = contct[:id]
           @first_name = contct[:fname]
@@ -16,7 +16,7 @@ class Contact
           @tel = contct[:phone]
           @mail = contct[:mail]
       end
-      #@@all << self
+      @@all << self
     end
   
     def name
@@ -53,7 +53,7 @@ class Contact
           File.foreach('contacts.json') { |line|
             #puts "#{count} - " + line
             #puts JSON.parse(line,:symbolize_names => true)
-              @@all << Contact.new(JSON.parse(line, :symbolize_names => true))
+              Contact.new(JSON.parse(line, :symbolize_names => true))
               count += 1
           }
           puts "\nContacts loaded!\n"
@@ -65,13 +65,13 @@ class Contact
     
     def self.load2
       if File.exist?('contacts.json')
-          File.open('contacts.json') {|fc|
+          File.open('contacts.json', 'r') {|fc|
               content = fc.read
               contact_data = JSON.parse(content)
               if contact_data.is_a?Hash
-                  @@all << Contact.new(contact_data)
+                  Contact.new(contact_data)
               elsif contact_data.is_a?Array
-                  contact_data.each{|c| @@all << Contact.new(c) }
+                  contact_data.each{|c| Contact.new(c) }
               end
           }
           puts "Contacts loaded!"
@@ -81,7 +81,7 @@ class Contact
     end
     
     def self.save(c)
-        File.open('contacts.json', 'a+') { |fc|
+        File.open('contacts.json', 'a') { |fc|
             fc.puts c.to_json
         }
     end
@@ -99,9 +99,9 @@ class Contact
     end
   
     def printed(num = "")
-      print "#{num != "" ? num : @id+1} - Full name: #{name}"
-      puts ", live at #{@address}"  if num.is_a?Integer #num > 1
-      puts "\tContacted by mail at: #{@mail}\n\t by phone at: #{@tel}" if num.is_a?Integer #num > 3
+      print "#{((num.is_a?Integer) && (num != 0)) ? num : @id+1} - Full name: #{self.name.red}"
+      puts ", live at #{@address.red}"  if num.is_a?Integer #num > 1
+      puts "\tContacted by mail at: #{@mail.red}\n\t by phone at: #{@tel.red}" if num.is_a?Integer #num > 3
       puts "\n\t\t"+"".center(50,"-")
     end
   
