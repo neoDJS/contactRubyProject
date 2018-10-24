@@ -99,8 +99,8 @@ class Contact
     end
   
     def printed(num = "")
-      print "#{((num.is_a?Integer) && (num != 0)) ? num : @id+1} - Full name: #{self.name.red}"
-      puts ", live at #{@address.red}"  if num.is_a?Integer #num > 1
+      print "#{((num.is_a?Integer) && (num != 0)) ? num : @id+1} - Full name: #{self.name.red}".green
+      puts ", live at #{@address.red}".green  if num.is_a?Integer #num > 1
       puts "\tContacted by mail at: #{@mail.red}\n\t by phone at: #{@tel.red}" if num.is_a?Integer #num > 3
       puts "\n\t\t"+"".center(50,"-")
     end
